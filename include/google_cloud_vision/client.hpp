@@ -41,7 +41,10 @@ public:
       bnh::client::response http_response;
       {
         bnh::client::options http_options;
-        http_options.always_verify_peer(true).timeout(60); // TODO: user-specified timeout
+        http_options.always_verify_peer(true);
+        if (ros_request.http_timeout > 0) {
+          http_options.timeout(ros_request.http_timeout);
+        }
         bnh::client http_client(http_options);
         http_response = http_client.post(http_request);
       }

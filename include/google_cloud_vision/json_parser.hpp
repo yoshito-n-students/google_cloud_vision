@@ -264,6 +264,7 @@ static inline bp::ptree toPtree(const srvs::Annotate::Request &request) {
   bp::ptree ptree;
   // "requests" is a required field
   ptree.put_child("requests", toPtree(request.requests));
+  // ignore "http_timeout" field
   return ptree;
 }
 
