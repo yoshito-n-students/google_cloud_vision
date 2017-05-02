@@ -16,11 +16,7 @@ find_package(
 
 ## System dependencies are found with CMake's conventions
 find_package(
-  Boost REQUIRED COMPONENTS 
-  system
-)
-find_package(
-  OpenSSL REQUIRED
+  cppnetlib REQUIRED
 )
 
 
@@ -163,8 +159,7 @@ add_dependencies(
 target_link_libraries(
   test_google_cloud_vision
   ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
+  ${CPPNETLIB_LIBRARIES}
 )
 
 #############
