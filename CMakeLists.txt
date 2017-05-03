@@ -147,6 +147,10 @@ add_executable(
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+set_target_properties(
+  test_google_cloud_vision PROPERTIES 
+  COMPILE_FLAGS "-DBOOST_NETWORK_ENABLE_HTTPS"
+)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above

@@ -4,6 +4,9 @@
 #include <sstream>
 #include <string>
 
+#ifndef BOOST_NETWORK_ENABLE_HTTPS
+#warning "Define BOOST_NETWORK_ENABLE_HTTPS if google_cloud_vision::Client does not work"
+#endif
 #include <boost/network/include/http/client.hpp>
 
 #include <google_cloud_vision/json_parser.hpp>
@@ -22,35 +25,21 @@ public:
   void call(srvs::Annotate &ros_service) { call(ros_service.request, ros_service.response); }
 
   void call(const srvs::Annotate::Request &ros_request, srvs::Annotate::Response &ros_response) {
-    // layers (top to bottom):
-    //   ROS:  request and response are written in ROS message types
-    //   JSON: written in JSON texts
-    //   HTTP: written in HTTP messages
-
     try {
       // ROS -> JSON
       std::ostringstream json_request;
       writeJson(json_request, ros_request, false);
 
-      // JSON -> HTTP
-      bnh::client::request http_request;
-      bnh::destination(http_request, http_destination_);
-      bnh::body(http_request, json_request.str());
-
-      // call the google cloud vision apis on the HTTP layer
-      bnh::client::response http_response;
+      // call the google cloud vision apis
+      std::istringstream json_response;
       {
         bnh::client::options http_options;
-        http_options.always_verify_peer(true);
         if (ros_request.http_timeout > 0) {
           http_options.timeout(ros_request.http_timeout);
         }
         bnh::client http_client(http_options);
-        http_response = http_client.post(http_request);
+        json_response.str(bnh::body(http_client.post(http_destination_, json_request.str())));
       }
-
-      // HTTP -> JSON
-      std::istringstream json_response(bnh::body(http_response));
 
       // JSON -> ROS
       readJson(json_response, ros_response);
@@ -65,7 +54,7 @@ public:
   }
 
 private:
-  const std::string http_destination_;
+  const bnh::client::request http_destination_;
 };
 }
 

@@ -12,7 +12,7 @@ namespace srvs = google_cloud_vision_srvs;
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    std::cerr << "Usage: " << argv[0] << " <image_file> <api_key>" << std::endl;
+    std::cerr << "Usage: test_google_cloud_vision <image_file> <api_key>" << std::endl;
     return 1;
   }
 
@@ -38,7 +38,16 @@ int main(int argc, char *argv[]) {
   client.call(request, response);
 
   // show the response
-  std::cout << response << std::endl;
+  // std::cout << response << std::endl;
+  if (response.responses.empty()) {
+    std::cerr << "No response" << std::endl;
+    return 0;
+  }
+  if (response.responses[0].text_annotations.empty()) {
+    std::cerr << "No text annotations in the response" << std::endl;
+    return 0;
+  }
+  std::cout << "Found:\n" << response.responses[0].text_annotations[0].description << std::endl;
 
   return 0;
 }

@@ -26,9 +26,14 @@ template < typename Value > void fromPtree(const bp::ptree &, std::vector< Value
 
 static inline void fromPtree(const bp::ptree &ptree, msgs::Vertex &vertex) {
   vertex = msgs::Vertex();
-  // all fields are required
-  fromPtree(ptree.get_child("x"), vertex.x);
-  fromPtree(ptree.get_child("y"), vertex.y);
+  if (ptree.count("x") > 0) {
+    vertex.has_x = true;
+    fromPtree(ptree.get_child("x"), vertex.x);
+  }
+  if (ptree.count("y") > 0) {
+    vertex.has_y = true;
+    fromPtree(ptree.get_child("y"), vertex.y);
+  }
 }
 
 static inline void fromPtree(const bp::ptree &ptree, msgs::BoundingPoly &poly) {
