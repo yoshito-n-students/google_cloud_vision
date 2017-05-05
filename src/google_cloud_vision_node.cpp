@@ -23,20 +23,27 @@ bool call(srvs::Annotate::Request &request, srvs::Annotate::Response &response) 
 }
 
 int main(int argc, char *argv[]) {
+  // init
   ros::init(argc, argv, "google_cloud_vision");
   ros::NodeHandle nh;
 
+  // load parameters
   std::string key;
   if (!rp::get("~key", key)) {
     ROS_ERROR("Required parameter ~key is missing");
     return 1;
   }
+  const int thread_count(rp::param("~thread_count", 1));
 
+  // create a service backend
   client.reset(new gcv::Client(key));
 
+  // create the service
   ros::ServiceServer server(nh.advertiseService("annotate", call));
 
-  ros::spin();
+  // run the service
+  ros::MultiThreadedSpinner spinner(thread_count);
+  spinner.spin();
 
   return 0;
 }
