@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 
   client.reset(new gcv::Client(key));
 
-  ros::ServiceServer server(nh.advertiseService("annotete", call));
+  ros::ServiceServer server(nh.advertiseService("annotate", call));
 
   ros::spin();
 
