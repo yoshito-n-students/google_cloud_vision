@@ -1,1 +1,1 @@
-# google_cloud_ocr
+# google_cloud_vision
