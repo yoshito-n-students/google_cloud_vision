@@ -138,8 +138,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(
-  test_google_cloud_vision 
-  src/test_google_cloud_vision.cpp
+  google_cloud_vision_node 
+  src/google_cloud_vision_node.cpp
 )
 
 ## Rename C++ executable without prefix
@@ -148,20 +148,20 @@ add_executable(
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
 # set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
 set_target_properties(
-  test_google_cloud_vision PROPERTIES 
+  google_cloud_vision_node PROPERTIES 
   COMPILE_FLAGS "-DBOOST_NETWORK_ENABLE_HTTPS"
 )
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 add_dependencies(
-  test_google_cloud_vision
+  google_cloud_vision_node
   google_cloud_vision_srvs_generate_messages_cpp  
 )
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
-  test_google_cloud_vision
+  google_cloud_vision_node
   ${catkin_LIBRARIES}
   ${CPPNETLIB_LIBRARIES}
 )
