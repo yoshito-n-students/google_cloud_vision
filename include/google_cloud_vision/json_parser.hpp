@@ -42,6 +42,41 @@ static inline void fromPtree(const bp::ptree &ptree, msgs::BoundingPoly &poly) {
   fromPtree(ptree.get_child("vertices"), poly.vertices);
 }
 
+static inline void fromPtree(const bp::ptree &ptree, msgs::Position &position) {
+  position = msgs::Position();
+  // all fields are required
+  fromPtree(ptree.get_child("x"), position.x);
+  fromPtree(ptree.get_child("y"), position.y);
+  fromPtree(ptree.get_child("z"), position.z);
+}
+
+static inline void fromPtree(const bp::ptree &ptree, msgs::Landmark &landmark) {
+  landmark = msgs::Landmark();
+  // all fields are required
+  fromPtree(ptree.get_child("type"), landmark.type);
+  fromPtree(ptree.get_child("position"), landmark.position);
+}
+
+static inline void fromPtree(const bp::ptree &ptree, msgs::FaceAnnotation &annotation) {
+  annotation = msgs::FaceAnnotation();
+  // all fields are required
+  fromPtree(ptree.get_child("boundingPoly"), annotation.bounding_poly);
+  fromPtree(ptree.get_child("fdBoundingPoly"), annotation.fd_bounding_poly);
+  fromPtree(ptree.get_child("landmarks"), annotation.landmarks);
+  fromPtree(ptree.get_child("rollAngle"), annotation.roll_angle);
+  fromPtree(ptree.get_child("panAngle"), annotation.pan_angle);
+  fromPtree(ptree.get_child("tiltAngle"), annotation.tilt_angle);
+  fromPtree(ptree.get_child("detectionConfidence"), annotation.detection_confidence);
+  fromPtree(ptree.get_child("landmarkingConfidence"), annotation.landmarking_confidence);
+  fromPtree(ptree.get_child("joyLikelihood"), annotation.joy_likelihood);
+  fromPtree(ptree.get_child("sorrowLikelihood"), annotation.sorrow_likelihood);
+  fromPtree(ptree.get_child("angerLikelihood"), annotation.anger_likelihood);
+  fromPtree(ptree.get_child("surpriseLikelihood"), annotation.surprise_likelihood);
+  fromPtree(ptree.get_child("underExposedLikelihood"), annotation.under_exposed_likelihood);
+  fromPtree(ptree.get_child("blurredLikelihood"), annotation.blurred_likelihood);
+  fromPtree(ptree.get_child("headwearLikelihood"), annotation.headwear_likelihood);
+}
+
 static inline void fromPtree(const bp::ptree &ptree, msgs::LatLng &lat_lng) {
   lat_lng = msgs::LatLng();
   // all fields are required
@@ -123,6 +158,9 @@ static inline void fromPtree(const bp::ptree &ptree, msgs::Status &status) {
 
 static inline void fromPtree(const bp::ptree &ptree, msgs::AnnotateImageResponse &response) {
   response = msgs::AnnotateImageResponse();
+  if (ptree.count("faceAnnotations") > 0) {
+    fromPtree(ptree.get_child("faceAnnotations"), response.face_annotations);
+  }
   if (ptree.count("landmarkAnnotations") > 0) {
     fromPtree(ptree.get_child("landmarkAnnotations"), response.landmark_annotations);
   }
