@@ -59,13 +59,22 @@ static inline void fromPtree(const bp::ptree &ptree, msgs::Landmark &landmark) {
 
 static inline void fromPtree(const bp::ptree &ptree, msgs::FaceAnnotation &annotation) {
   annotation = msgs::FaceAnnotation();
+  // all fields are required
   fromPtree(ptree.get_child("boundingPoly"), annotation.bounding_poly);
   fromPtree(ptree.get_child("fdBoundingPoly"), annotation.fd_bounding_poly);
   fromPtree(ptree.get_child("landmarks"), annotation.landmarks);
   fromPtree(ptree.get_child("rollAngle"), annotation.roll_angle);
   fromPtree(ptree.get_child("panAngle"), annotation.pan_angle);
   fromPtree(ptree.get_child("tiltAngle"), annotation.tilt_angle);
-  // TODO: implement all fields
+  fromPtree(ptree.get_child("detectionConfidence"), annotation.detection_confidence);
+  fromPtree(ptree.get_child("landmarkingConfidence"), annotation.landmarking_confidence);
+  fromPtree(ptree.get_child("joyLikelihood"), annotation.joy_likelihood);
+  fromPtree(ptree.get_child("sorrowLikelihood"), annotation.sorrow_likelihood);
+  fromPtree(ptree.get_child("angerLikelihood"), annotation.anger_likelihood);
+  fromPtree(ptree.get_child("surpriseLikelihood"), annotation.surprise_likelihood);
+  fromPtree(ptree.get_child("underExposedLikelihood"), annotation.under_exposed_likelihood);
+  fromPtree(ptree.get_child("blurredLikelihood"), annotation.blurred_likelihood);
+  fromPtree(ptree.get_child("headwearLikelihood"), annotation.headwear_likelihood);
 }
 
 static inline void fromPtree(const bp::ptree &ptree, msgs::LatLng &lat_lng) {
